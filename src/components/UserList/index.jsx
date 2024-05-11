@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Divider, List, ListItem, Typography } from "@mui/material";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import "./styles.css";
 import axios from "axios";
 import Loading from "../Loading/Loading";
+import { MyContext } from "../AppContext/contextProvider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Define UserList, a React component of Project 4.
@@ -12,14 +14,16 @@ import Loading from "../Loading/Loading";
 function UserList() {
   //const users = models.userListModel();
   const [users, setUsers] = useState([]);
+  const [hideSidebar, setHideSidebar] = useState(false)
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token")
+  const {user} = useContext(MyContext)
   useEffect(() => {
     const fetchUsers = async () => {
       const headers = { 'Authorization': `Bearer ${token}` };
       try {
         const res = await axios.get(
-          "https://css4mv-8081.csb.app/api/user/list",
+          "https://sqvfxf-8080.csb.app/api/user/list",
           {headers: headers}
         );
         setUsers(res.data);
@@ -36,25 +40,26 @@ function UserList() {
   if(loading){
     return <Loading />
   }
-  console.log(users)
+
   return (
-    <div>
-      <h2>User List </h2>
-      <List component="nav">
-        {users.map((item) => (
-          <div key={item._id}>
-            <ListItem>
+    <div className={`side-bar ${hideSidebar ? 'hide' : ''}`}>
+      <div className="list-header">
+        <h2 className={`list-header-text ${hideSidebar ? 'hide' : ''}`}>User List </h2>
+        <div className="bar" onClick={() => setHideSidebar(!hideSidebar)}>
+          <FontAwesomeIcon icon={faBars} />
+        </div>
+      </div>
+      <nav className={`nav-bar ${hideSidebar ? 'hide' : ''}`}>
+        <ul className="list">
+          {users?.filter(item => item._id !== user._id).map((item) => (
+            <li key={item._id} className="list-item">
               <Link className="link-item" to={`/users/${item._id}`}>
                 {item.first_name + " " + item.last_name}
               </Link>
-            </ListItem>
-            <Divider />
-          </div>
-        ))}
-      </List>
-      <Typography variant="body1" style={{marginTop:"50px"}}>
-        This is the project owned by B21DCCN774 - Pham Viet Tung
-      </Typography>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 }

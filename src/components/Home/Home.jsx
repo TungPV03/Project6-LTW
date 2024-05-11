@@ -1,45 +1,16 @@
-import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom"
-import { MyContext } from "../AppContext/contextProvider";
-import axios from "axios";
+import './Home.css'
 
 export default function Home(){
     const goTo = useNavigate()
     const token = localStorage.getItem("token");
-    const {user, setUser} = useContext(MyContext);
-
-    useEffect(() => {
-        const fetchUserProfile = async () => {
-            const headers = { 'Authorization': `Bearer ${token}` };
-            try{
-                const res = await axios.get(
-                    "https://css4mv-8081.csb.app/api/admin/profile",
-                    {headers: headers}
-                    )
-
-                setUser(res.data);
-                goTo(`/users/${res.data._id}`)
-            }catch(e){
-                console.error("Failed to fetch user profile", e);
-            }
-        }
-
-        fetchUserProfile()
-    }, [])
 
     return(
-        <div style={{
-                display:"flex",
-                alignItems:"center", 
-                height:"90vh",
-                flexDirection:"column"
-            }}
-        >
-            <h1 style={{fontSize:"4rem"}}>Welcome to Photo Sharing App</h1>
-            <h2 style={{fontSize: "2rem"}}>This is home page</h2>
+        <div className="home-content">
+            <h1 className="home-h1">Welcome to Photo Sharing App</h1>
+            <h2 className="home-h2">This is home page</h2>
             {!token && <span 
                 className="link-text" 
-                style={{fontSize:"2rem"}}
                 onClick={() => goTo("/login")}
             >
                 Log in

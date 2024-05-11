@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import './styles.css';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Loading from "../Loading/Loading";
 
 export default function Login({setToken}){
     const [isShowed, setIsShowed] = useState(false);
@@ -17,13 +18,14 @@ export default function Login({setToken}){
         const username = userNameRef.current.value;
         const password = passwordRef.current.value;
         try{
-            const res = await axios.post("https://css4mv-8081.csb.app/api/admin/login", {
+            const res = await axios.post("https://sqvfxf-8080.csb.app/api/admin/login", {
                 username,
                 password
             });
 
             const token = res.data.token;
             localStorage.setItem("token", token);
+            setToken(token)
             setLoading(false)
             alert("Login successfully!")
             goTo("/");
@@ -37,7 +39,7 @@ export default function Login({setToken}){
 
     return (
         <div className="login-container">
-            <h2>Login to enjoy our application</h2>
+            <h2 className="sign-up-header">Login to enjoy our application</h2>
             <div className="input-box-container">
                 <span className="input-discription">User name: </span>
                 <div className="input-box">
@@ -72,10 +74,8 @@ export default function Login({setToken}){
                 Don't have an account? 
                 <span className="link-text" onClick={() => goTo('/signup')}> Register</span>
             </span>
-            {loading && <div className="alert">
-                <div className="alert-text">
-                    <h2>Verifying user ...</h2>
-                </div>
+            {loading && <div className="authen">
+                <Loading text="Verifying user..."/>
             </div>}
         </div>
     )

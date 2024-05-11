@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import './styles.css';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Loading from "../Loading/Loading";
 
 export default function SignUp(){
     const [isShowed, setIsShowed] = useState(false);
@@ -37,7 +38,7 @@ export default function SignUp(){
         }
         try{
             const res = await axios.post(
-                "https://css4mv-8081.csb.app/api/admin/register",
+                "https://sqvfxf-8080.csb.app/api/admin/register",
                 body
                 )
             setLoading(false)
@@ -52,7 +53,7 @@ export default function SignUp(){
 
     return (
         <div className="login-container">
-            <h2>Create new user</h2>
+            <h2 className="sign-up-header">Create new user</h2>
             <div className="input-box-container">
                 <span className="input-discription">User name: </span>
                 <div className="input-box">
@@ -118,9 +119,9 @@ export default function SignUp(){
                     <textarea 
                         name="discription" 
                         id="discription" 
-                        cols="30" 
-                        rows="10"
                         placeholder="Enter discription"
+                        cols={15}
+                        rows={5}
                         ref={discriptionRef}
                         required
                     >
@@ -151,10 +152,8 @@ export default function SignUp(){
                 Have an account? 
                 <span className="link-text" onClick={() => goTo('/login')}> Log in</span>
             </span>
-            {loading && <div className="alert">
-                <div className="alert-text">
-                    <h2>Registering user ...</h2>
-                </div>
+            {loading && <div className="authen">
+                <Loading text="Registering..."/>
             </div>}
         </div>
     )

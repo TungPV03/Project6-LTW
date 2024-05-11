@@ -3,11 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import './Loding.css'
 
-const Loading = () => {
+const Loading = ({text}) => {
+  text = text ? text : "Loading..."
   return (
     <div className="loading-container">
       <FontAwesomeIcon icon={faSpinner} spin size="3x" className="load-icon"/>
-      <p >Loading...</p>
+      <p>{text}</p>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { storage } from "../../firebase"
 import { MyContext } from "../AppContext/contextProvider"
 import axios from "axios"
 import Loading from "../Loading/Loading"
+import { useNavigate } from "react-router-dom"
 
 export default function UploadImg(){
     const [img, setImg] = useState(null)
@@ -14,6 +15,7 @@ export default function UploadImg(){
     const [isLoading, setIsLoading] = useState(false)
     const {user} = useContext(MyContext)
     const token = localStorage.getItem("token")
+    const goTo = useNavigate()
 
     const handleUpload = async () => {
         setIsLoading(true)
@@ -33,7 +35,7 @@ export default function UploadImg(){
             }
 
             const res = await axios.post(
-                'https://css4mv-8081.csb.app/api/photo/new',
+                'https://sqvfxf-8080.csb.app/api/photo/new',
                 newPhoto,
                 {headers: headers}
             )
@@ -41,6 +43,7 @@ export default function UploadImg(){
             console.log('Success to upload img: ', res.data)
             setUploading(false)
             setIsLoading(false)
+            goTo(`/photo/${res.data.photo._id}`)
         }catch(e){
             alert("Error to upload image!")
             console.error("Error to upload image!", e);
@@ -66,7 +69,7 @@ export default function UploadImg(){
                         <button className="upload-btn" onClick={handleUpload} >Upload</button>
                         <button className="close-btn" onClick={() => setUploading(false)}>Close</button>
                     </div>
-                        { isLoading && <div className="uploadingImg">
+                    { isLoading && <div className="uploadingImg">
                         <Loading />
                     </div>}
                 </div>

@@ -11,13 +11,15 @@
 }
 
 .user-detail-container{
-    max-width: 50%;
+    min-width: 50%;
+    max-width: 75%;
     padding: 20px 15px;
     box-shadow: 0 0 10px 2px #212121;
     border-radius: 25px;
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin: 45px 0;
+    gap: 5px;
 }
 
 .user-detail{
@@ -39,7 +41,7 @@
 
 .item-center.link:hover{
     color: #5AB2FF;
-  font-size: 1.3rem;
+    font-size: 1.3rem;
 }
 
 .upload-container{
@@ -139,4 +141,7 @@
     height: 100%;
     background-color: rgba(250,250,250,0.7);
     color: #fafafa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

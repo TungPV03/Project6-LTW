@@ -22,7 +22,7 @@ function UserDetail() {
       const headers = { 'Authorization': `Bearer ${token}` };
       try{
         const res = await axios.get(
-          `https://css4mv-8081.csb.app/api/user/${userId.userId}`,
+          `https://sqvfxf-8080.csb.app/api/user/${userId.userId}`,
           {headers: headers}
         );
         setUserInfor(res.data);
@@ -45,10 +45,9 @@ function UserDetail() {
         && <UploadImg />
       }
       <div className="user-detail-container">
-        <h2 className="item-center">User Information</h2>
         <div className="item-center">
           <span style={{ fontWeight: "bold", fontSize: "30px" }}>
-            {userInfor.first_name}
+            {userInfor.first_name + " " + userInfor.last_name}
           </span>
         </div>
         <p className="user-detail">
@@ -76,7 +75,7 @@ function UserDetail() {
           {userInfor.occupation}
         </p>
         <Link to={`/photos/${userId.userId}`} className="item-center link">
-          Photos shared by {userInfor.first_name}
+          Photos shared by {userInfor.first_name + " " + userInfor.last_name}
         </Link>
       </div>
     </div>

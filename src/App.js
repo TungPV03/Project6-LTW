@@ -1,7 +1,6 @@
 import './App.css';
 
-import React, { useContext, useState } from "react";
-import { Grid, Paper } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 import TopBar from "./components/TopBar";
@@ -11,50 +10,71 @@ import UserPhotos from "./components/UserPhotos";
 import Login from './components/LoginSignup/Login';
 import SignUp from './components/LoginSignup/Signup';
 import Home from './components/Home/Home';
-import { MyContext } from './components/AppContext/contextProvider';
 import Photo from './components/UserPhotos/Photo';
+import { MyContext } from './components/AppContext/contextProvider';
+import axios from 'axios';
 
 const App = () => {
-  const {user} = useContext(MyContext)
+  const [token, setToken] = useState(localStorage.getItem('token'))
+  const {user, setUser} = useContext(MyContext)
+  useEffect(() => {
+    if(!token) return
+    const fetchUserProfile = async () => {
+        const headers = { 'Authorization': `Bearer ${token}` };
+        if(!token) return;
+        try{
+            const res = await axios.get(
+                "https://sqvfxf-8080.csb.app/api/admin/profile",
+                {headers: headers}
+                )
+            setUser(res.data);
+            console.log(res.data)
+        }catch(e){
+            console.error("Failed to fetch user profile", e);
+        }
+    }
+
+    fetchUserProfile()
+  }, [token])
+
   return (
       <Router>
         <div>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
+          <div className='app-container'>
+            <div className='top-bar'>
               <TopBar />
-            </Grid>
-            <div className="main-topbar-buffer" />
-            <Grid item sm={3}>
-              <Paper className="main-grid-item">
-                {user ?
-                  <UserList /> :
-                  <h4>Please log in to see user list</h4>
-                }
-              </Paper>
-            </Grid>
-            <Grid item sm={9}>
-              <Paper className="main-grid-item">
+            </div>
+            <div className='main-topbar-buffer'></div>
+            {user &&
+              <UserList />
+            }
+            <div className='main-content-container'>
                 <Routes>
                   <Route path='/' element={<Home />}/>
                   <Route 
                       path='/login'
-                      element = {<Login />}
+                      element = {<Login setToken={setToken}/>}
                   />
                   <Route path='/signup' element={<SignUp />}></Route>
-                  {user ? (
-                  <>
-                    <Route path="/users/:userId" element={<UserDetail />} />
-                    <Route path="/photos/:userId" element={<UserPhotos />} />
-                    <Route path='/photo/:photoId' element={<Photo />} />
-                    <Route path="/users" element={<UserList />} />
-                  </>
-                ) : (
-                  <Route path="*" element={<Navigate to="/login" />} />
-                )}
+                  <Route
+                    path="/users/:userId"
+                    element={token ? <UserDetail /> : <Navigate to="/login" />}
+                  />
+                  <Route
+                    path="/photos/:userId"
+                    element={token ? <UserPhotos /> : <Navigate to="/login" />}
+                  />
+                  <Route
+                    path="/photo/:photoId"
+                    element={token ? <Photo /> : <Navigate to="/login" />}
+                  />
+                  <Route
+                    path="/users"
+                    element={token ? <UserList /> : <Navigate to="/login" />}
+                  />
                 </Routes>
-              </Paper>
-            </Grid>
-          </Grid>
+            </div>
+          </div>
         </div>
       </Router>
   );
