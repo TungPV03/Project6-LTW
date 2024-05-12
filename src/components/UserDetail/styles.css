@@ -37,6 +37,7 @@
     transition: 0.1s;
     font-size: 1.2rem;
     font-weight: bold;
+    text-align: center;
 }
 
 .item-center.link:hover{

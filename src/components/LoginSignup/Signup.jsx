@@ -17,6 +17,7 @@ export default function SignUp(){
     const occupationRef = useRef(null)
     const discriptionRef = useRef(null)
     const locationRef = useRef(null)
+    const repasswordRef = useRef(null)
 
     const handleRegister = async () => {
         setLoading(true)
@@ -25,7 +26,13 @@ export default function SignUp(){
             || !firstNameRef.current.value 
             || !lastNameref.current.value) {
             alert("Please fill in all input boxs!");
+            setLoading(false)
             return;
+        }
+        if(passwordRef.current.value  !== repasswordRef.current.value){
+            alert("Password and its repeat are not matched! Please try again")
+            setLoading(false)
+            return
         }
         const body = {
             user_name: userNameRef.current.value,
@@ -136,6 +143,23 @@ export default function SignUp(){
                         className="password-input"
                         placeholder="Password"
                         ref={passwordRef}
+                        required
+                    />
+                    <FontAwesomeIcon 
+                        icon={isShowed ? faEye : faEyeSlash} 
+                        className={isShowed ? "show-pass-icon" : "show-pass-icon hide"}
+                        onClick={() => setIsShowed(!isShowed)}
+                    />
+                </div>
+            </div>
+            <div className="input-box-container">
+                <span className="input-discription">Password: </span>
+                <div className="input-box">
+                    <input 
+                        type={isShowed ? "text" : "password"} 
+                        className="password-input"
+                        placeholder="Password"
+                        ref={repasswordRef}
                         required
                     />
                     <FontAwesomeIcon 

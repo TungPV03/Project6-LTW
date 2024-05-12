@@ -54,7 +54,7 @@ const App = () => {
                   <Route path='/' element={<Home />}/>
                   <Route 
                       path='/login'
-                      element = {<Login setToken={setToken}/>}
+                      element = {localStorage.getItem('token') ? <Navigate to="/" /> : <Login setToken={setToken}/>}
                   />
                   <Route path='/signup' element={<SignUp />}></Route>
                   <Route

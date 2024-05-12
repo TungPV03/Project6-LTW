@@ -64,15 +64,15 @@ function UserDetail() {
         </p>
         <p className="user-detail">
           <span className="label">Location: </span>
-          {userInfor.location}
+          {userInfor.location || "Unset"}
         </p>
         <p className="user-detail">
           <span className="label">Description: </span>
-          {userInfor.description}
+          {userInfor.description || "Unset"}
         </p>
         <p className="user-detail">
           <span className="label">Occupation: </span>
-          {userInfor.occupation}
+          {userInfor.occupation || "Unset"}
         </p>
         <Link to={`/photos/${userId.userId}`} className="item-center link">
           Photos shared by {userInfor.first_name + " " + userInfor.last_name}
