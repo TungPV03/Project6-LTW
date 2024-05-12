@@ -8,9 +8,21 @@ export default function Dialog({type, trigerFunction, setShowDialog}){
             <div className="dialog-container">
                 {
                     type === 'success' ?
-                    <FontAwesomeIcon icon={faCircleCheck} className="success"/> :
+                    <>
+                        <FontAwesomeIcon icon={faCircleCheck} size="5x" className="success"/>
+                        <span>Success</span>
+                        <div className="choice-option">
+                            <button onClick={() => trigerFunction()}>CLOSE</button>
+                        </div>
+                    </> :
                     type === 'fail' ?
-                    <FontAwesomeIcon icon={faCircleXmark} className="fail"/> :
+                    <>
+                        <FontAwesomeIcon icon={faCircleXmark} size="5x" className="fail"/>
+                        <span>Failed! Please try again</span>
+                        <div className="choice-option">
+                            <button onClick={() => setShowDialog(false)}>CLOSE</button>
+                        </div>
+                    </> :
                     <>
                         <FontAwesomeIcon icon={faTriangleExclamation} size="5x" className="alert" />
                         <span>Are you sure to delete this photo?</span>

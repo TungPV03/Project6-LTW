@@ -13,6 +13,7 @@ import Home from './components/Home/Home';
 import Photo from './components/UserPhotos/Photo';
 import { MyContext } from './components/AppContext/contextProvider';
 import axios from 'axios';
+import NotFound from './components/NotFount/NotFound';
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token'))
@@ -71,6 +72,10 @@ const App = () => {
                   <Route
                     path="/users"
                     element={token ? <UserList /> : <Navigate to="/login" />}
+                  />
+                  <Route 
+                    path='*'
+                    element = {<NotFound />}
                   />
                 </Routes>
             </div>

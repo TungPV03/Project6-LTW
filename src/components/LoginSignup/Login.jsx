@@ -5,10 +5,13 @@ import './styles.css';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loading from "../Loading/Loading";
+import Dialog from "../Loading/Dialog";
 
 export default function Login({setToken}){
     const [isShowed, setIsShowed] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [showDialog, setShowDialog] = useState(false)
+    const [typeDialog, setTypeDialog] = useState("")
     const userNameRef = useRef(null)
     const passwordRef = useRef(null)
     const goTo = useNavigate()
@@ -27,14 +30,19 @@ export default function Login({setToken}){
             localStorage.setItem("token", token);
             setToken(token)
             setLoading(false)
-            alert("Login successfully!")
-            goTo("/");
+            setTypeDialog("success")
+            setShowDialog(true)
         } catch(e){
-            alert("Login failed! Please check your username or password")
             passwordRef.current.value = "";
             setLoading(false)
+            setTypeDialog("fail")
+            setShowDialog(true)
             console.error("Login Failed: ", e);
         }
+    }
+
+    const goToHome = () => {
+        goTo("/");
     }
 
     return (
@@ -77,6 +85,9 @@ export default function Login({setToken}){
             {loading && <div className="authen">
                 <Loading text="Verifying user..."/>
             </div>}
+            {showDialog &&
+                <Dialog type={typeDialog} trigerFunction={goToHome} setShowDialog={setShowDialog}/>
+            }
         </div>
     )
 }
